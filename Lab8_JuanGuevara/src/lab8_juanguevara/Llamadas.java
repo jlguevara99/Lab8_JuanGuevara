@@ -5,7 +5,9 @@
  */
 package lab8_juanguevara;
 
-import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -18,11 +20,16 @@ import javax.swing.tree.DefaultTreeModel;
  */
 public class Llamadas extends javax.swing.JFrame {
 
+    Dba db = new Dba("./nuevo.l.accdb");
+    
     /**
      * Creates new form Llamadas
      */
     public Llamadas() {
+        
         initComponents();
+        h = new Hilo(hora);
+        pro = new Thread(h);
     }
 
     /**
@@ -61,7 +68,6 @@ public class Llamadas extends javax.swing.JFrame {
         arbol = new javax.swing.JTree();
         jLabel8 = new javax.swing.JLabel();
         combo = new javax.swing.JComboBox<>();
-        jButton4 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         receptor = new javax.swing.JList<>();
@@ -71,6 +77,16 @@ public class Llamadas extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        buzon = new javax.swing.JList<>();
+        combo2 = new javax.swing.JComboBox<>();
+        jPanel5 = new javax.swing.JPanel();
+        hora = new javax.swing.JLabel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        llamar = new javax.swing.JList<>();
+        jButton4 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -241,8 +257,6 @@ public class Llamadas extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("Cargar contactos");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -253,23 +267,17 @@ public class Llamadas extends javax.swing.JFrame {
                         .addGap(123, 123, 123)
                         .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(53, 53, 53)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(314, 314, 314)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 208, Short.MAX_VALUE)
-                        .addComponent(jButton4)))
-                .addContainerGap())
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(242, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton4))
+                .addContainerGap()
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -339,18 +347,105 @@ public class Llamadas extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Mensajes", jPanel3);
 
+        buzon.setModel(new DefaultListModel());
+        jScrollPane2.setViewportView(buzon);
+
+        combo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fecha", "Receptor" }));
+        combo2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                combo2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 724, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(135, 135, 135)
+                .addComponent(combo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(56, 56, 56)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(264, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 435, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(combo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(144, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("tab4", jPanel4);
+        jTabbedPane1.addTab("Buzon", jPanel4);
+
+        hora.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        hora.setText("00:00:00");
+
+        llamar.setModel(new DefaultListModel());
+        jScrollPane7.setViewportView(llamar);
+
+        jButton4.setText("Llamar");
+        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton4MouseClicked(evt);
+            }
+        });
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setText("Detener");
+        jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton6MouseClicked(evt);
+            }
+        });
+
+        jLabel12.setText("Tiempo");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(120, 120, 120)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(57, 57, 57)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(284, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel12)
+                .addGap(42, 42, 42)
+                .addComponent(hora, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(hora, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12))
+                        .addGap(68, 68, 68)
+                        .addComponent(jButton4)
+                        .addGap(43, 43, 43)
+                        .addComponent(jButton6)))
+                .addContainerGap(143, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Llamada", jPanel5);
 
         jLabel1.setText("Celular las Baleadas");
 
@@ -384,6 +479,7 @@ public class Llamadas extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
+
         try {
             DefaultListModel m = (DefaultListModel) contactos.getModel();
             String gen = "";
@@ -396,7 +492,24 @@ public class Llamadas extends javax.swing.JFrame {
             c.add(new Contactos(nombre.getText(), Integer.parseInt(edad.getText()), Integer.parseInt(telefono.getText()), correo.getText(), direccion.getText(), gen));
             contactos.setModel(m);
             receptor.setModel(m);
+            llamar.setModel(m);
             //emisores.setModel(m);
+
+            String no, co;
+            int ed, tel;
+            no = nombre.getText();
+            co = correo.getText();
+            ed = Integer.parseInt(edad.getText());
+            tel = Integer.parseInt(telefono.getText());
+            try {
+                db.conectar();
+                db.query.execute("INSERT INTO Contactos"
+                        + "(Nombre,edad,telefono,correo)" + " VALUES('" + no + "','" + ed + "','" + tel + "','" + co + "')");
+                db.desconectar();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "No se ingreso");
+            }
+
             nombre.setText("");
             edad.setText("");
             telefono.setText("");
@@ -404,6 +517,7 @@ public class Llamadas extends javax.swing.JFrame {
             direccion.setText("");
             F.setSelected(true);
             M.setSelected(false);
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Ha ingresado algún dato incorrecto\nO no ha ingresado algún dato");
         }
@@ -411,11 +525,10 @@ public class Llamadas extends javax.swing.JFrame {
 
     private void comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboActionPerformed
         // TODO add your handling code here:
+        DefaultTreeModel m = (DefaultTreeModel) arbol.getModel();
+        DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) m.getRoot();
         if (combo.getSelectedIndex() == 0) {
 
-            DefaultTreeModel m = (DefaultTreeModel) arbol.getModel();
-
-            DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) m.getRoot();
             raiz.removeAllChildren();
             DefaultMutableTreeNode homb;
             homb = new DefaultMutableTreeNode("Masculino");
@@ -433,9 +546,35 @@ public class Llamadas extends javax.swing.JFrame {
             raiz.add(muj);
             raiz.add(homb);
             m.reload();
-        } else if (combo.getSelectedIndex() == 1) {
-            DefaultMutableTreeNode e = (DefaultMutableTreeNode) arbol.getModel();
+        } else {
 
+            raiz.removeAllChildren();
+            boolean rep = false;
+            ArrayList<Integer> i = new ArrayList();
+            for (int j = 0; j < c.size(); j++) {
+                rep = false;
+                for (int k = 0; k < i.size(); k++) {
+                    if (c.get(j).getEdad() == i.get(k)) {
+                        rep = true;
+                    }
+
+                }
+                if (rep == false) {
+                    i.add(c.get(j).getEdad());
+                }
+            }
+
+            for (int j = 0; j < i.size(); j++) {
+                DefaultMutableTreeNode q = new DefaultMutableTreeNode(i.get(j) + "");
+                for (int k = 0; k < c.size(); k++) {
+                    if (c.get(k).getEdad() == i.get(j)) {
+                        DefaultMutableTreeNode z = new DefaultMutableTreeNode(c.get(k).getNombre());
+                        q.add(z);
+                    }
+                }
+                raiz.add(q);
+            }
+            m.reload();
         }
     }//GEN-LAST:event_comboActionPerformed
 
@@ -459,6 +598,7 @@ public class Llamadas extends javax.swing.JFrame {
                 m.remove(contactos.getSelectedIndex());
                 contactos.setModel(m);
                 receptor.setModel(m);
+                llamar.setModel(m);
                 //emisores.setModel(m);
                 nombre.setText("");
                 edad.setText("");
@@ -484,6 +624,7 @@ public class Llamadas extends javax.swing.JFrame {
                 c.remove(contactos.getSelectedIndex() + 1);
                 contactos.setModel(m);
                 receptor.setModel(m);
+                llamar.setModel(m);
                 //emisores.setModel(m);
 
             } else {
@@ -499,15 +640,53 @@ public class Llamadas extends javax.swing.JFrame {
         DefaultListModel m = (DefaultListModel) receptor.getModel();
         if (receptor.getSelectedIndex() >= 0) {
             try {
-                String n = ((Contactos)m.get(receptor.getSelectedIndex())).getNombre();
-                
-                mensajes.add(new Mensaje("User",n,new Date(3),mensaje.getText()));
-                
+                String n = ((Contactos) m.get(receptor.getSelectedIndex())).getNombre();
+                Date h = new Date();
+                DateFormat f = new SimpleDateFormat("dd/MM/YYYY");
+                mensajes.add(new Mensaje("User", n, f.format(h), mensaje.getText()));
+                mensaje.setText("");
             } catch (Exception e) {
             }
         }
 
     }//GEN-LAST:event_jButton5MouseClicked
+
+    private void combo2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo2ActionPerformed
+        // TODO add your handling code here:
+        DefaultListModel m = (DefaultListModel) buzon.getModel();
+        try {
+            if (combo2.getSelectedIndex() == 0) {
+                m.clear();
+                for (int i = 0; i < mensajes.size(); i++) {
+                    m.addElement(mensajes.get(i).getFecha() + " --> " + mensajes.get(i).getContenido());
+                }
+                buzon.setModel(m);
+            } else {
+                m.clear();
+                for (int i = 0; i < mensajes.size(); i++) {
+                    m.addElement(mensajes.get(i).getReceptor() + " --> " + mensajes.get(i).getContenido());
+                }
+                buzon.setModel(m);
+            }
+        } catch (Exception e) {
+        }
+
+    }//GEN-LAST:event_combo2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
+        // TODO add your handling code here:
+        pro.start();
+        
+    }//GEN-LAST:event_jButton4MouseClicked
+
+    private void jButton6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseClicked
+        // TODO add your handling code here:
+        h.setA(false);
+    }//GEN-LAST:event_jButton6MouseClicked
 
     /**
      * @param args the command line arguments
@@ -548,20 +727,25 @@ public class Llamadas extends javax.swing.JFrame {
     private javax.swing.JRadioButton F;
     private javax.swing.JRadioButton M;
     private javax.swing.JTree arbol;
+    private javax.swing.JList<String> buzon;
     private javax.swing.JComboBox<String> combo;
+    private javax.swing.JComboBox<String> combo2;
     private javax.swing.JList<String> contactos;
     private javax.swing.JTextField correo;
     private javax.swing.JTextArea direccion;
     private javax.swing.JTextField edad;
     private javax.swing.ButtonGroup genero;
+    private javax.swing.JLabel hora;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -573,17 +757,23 @@ public class Llamadas extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JList<String> llamar;
     private javax.swing.JTextArea mensaje;
     private javax.swing.JTextField nombre;
     private javax.swing.JList<String> receptor;
     private javax.swing.JTextField telefono;
     // End of variables declaration//GEN-END:variables
 ArrayList<Contactos> c = new ArrayList();
-    ArrayList<Mensaje> mensajes = new ArrayList();
+Hilo h ;
+Thread pro;
+ArrayList<Mensaje> mensajes = new ArrayList();
 }

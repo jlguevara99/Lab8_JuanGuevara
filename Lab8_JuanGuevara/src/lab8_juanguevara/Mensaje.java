@@ -5,7 +5,7 @@
  */
 package lab8_juanguevara;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  *
@@ -14,18 +14,20 @@ import java.sql.Date;
 public class Mensaje {
    private String emisor;
    private String receptor;
-   private Date fecha ;
+   private String fecha ;
    private String contenido;
 
     public Mensaje() {
     }
 
-    public Mensaje(String emisor, String receptor, Date fecha, String contenido) {
+    public Mensaje(String emisor, String receptor, String fecha, String contenido) {
         this.emisor = emisor;
         this.receptor = receptor;
         this.fecha = fecha;
         this.contenido = contenido;
     }
+
+    
 
     
 
@@ -47,11 +49,11 @@ public class Mensaje {
         this.receptor = receptor;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
