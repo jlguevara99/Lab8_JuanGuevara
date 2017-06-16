@@ -12,34 +12,38 @@ import java.sql.Date;
  * @author HP
  */
 public class Mensaje {
-   private Contactos emisor;
-   private Contactos receptor;
-   private Date fecha;
+   private String emisor;
+   private String receptor;
+   private Date fecha ;
    private String contenido;
 
     public Mensaje() {
     }
 
-    public Mensaje(Contactos emisor, Contactos receptor, Date fecha, String contenido) {
+    public Mensaje(String emisor, String receptor, Date fecha, String contenido) {
         this.emisor = emisor;
         this.receptor = receptor;
         this.fecha = fecha;
         this.contenido = contenido;
     }
 
-    public Contactos getEmisor() {
+    
+
+    
+
+    public String getEmisor() {
         return emisor;
     }
 
-    public void setEmisor(Contactos emisor) {
+    public void setEmisor(String emisor) {
         this.emisor = emisor;
     }
 
-    public Contactos getReceptor() {
+    public String getReceptor() {
         return receptor;
     }
 
-    public void setReceptor(Contactos receptor) {
+    public void setReceptor(String receptor) {
         this.receptor = receptor;
     }
 
